@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.1" halcon_version="12.0">
+<procedure name="main">
+<interface/>
+<body>
+<l>dev_set_draw ('margin')</l>
+<c></c>
+<l>read_image (Image, 'D:/WORKSPACE/hdc/Temporary/2015-01-28/test-07.tif')</l>
+<c></c>
+<l>GetRegionOfLightOrDarkRect2 (Image, FoundRegion, 'dark', 450, 500, 150, 999999999, 150, 90)</l>
+<c></c>
+<c></c>
+</body>
+<docu id="main">
+<parameters/>
+</docu>
+</procedure>
+<procedure name="GetRegionOfLightOrDarkRect2">
+<interface>
+<io>
+<par name="Image" base_type="iconic" dimension="0"/>
+</io>
+<oo>
+<par name="FoundRegion" base_type="iconic" dimension="0"/>
+</oo>
+<ic>
+<par name="LightDark" base_type="ctrl" dimension="0"/>
+<par name="WidthMin" base_type="ctrl" dimension="0"/>
+<par name="WidthMax" base_type="ctrl" dimension="0"/>
+<par name="HeightMin" base_type="ctrl" dimension="0"/>
+<par name="HeightMax" base_type="ctrl" dimension="0"/>
+<par name="Rect2Len1" base_type="ctrl" dimension="0"/>
+<par name="Rect2Len2" base_type="ctrl" dimension="0"/>
+</ic>
+</interface>
+<body>
+<l>binary_threshold (Image, Region, 'max_separability', LightDark, UsedThreshold)</l>
+<c></c>
+<l>connection (Region, ConnectedRegions)</l>
+<l>select_shape (ConnectedRegions, SelectedRegions, 'width', 'and', WidthMin, WidthMax)</l>
+<l>select_shape (SelectedRegions, SelectedRegions1, 'height', 'and', HeightMin, HeightMax)</l>
+<c></c>
+<l>smallest_rectangle2 (SelectedRegions1, Row, Column, Phi, Length1, Length2)</l>
+<l>gen_rectangle2 (Rectangle, Row, Column, Phi, Rect2Len1, Rect2Len2)</l>
+<l>smallest_rectangle1 (Rectangle, Row1, Column1, Row2, Column2)</l>
+<l>gen_rectangle1 (FoundRegion, Row1, Column1, Row2, Column2)</l>
+<c></c>
+<l>return ()</l>
+</body>
+<docu id="GetRegionOfLightOrDarkRect2">
+<parameters>
+<parameter id="FoundRegion">
+<multivalue>false</multivalue>
+<sem_type>region</sem_type>
+</parameter>
+<parameter id="HeightMax">
+<default_type>real</default_type>
+<sem_type>real</sem_type>
+<type_list>
+<item>real</item>
+</type_list>
+</parameter>
+<parameter id="HeightMin">
+<default_type>real</default_type>
+<sem_type>real</sem_type>
+<type_list>
+<item>real</item>
+</type_list>
+</parameter>
+<parameter id="Image">
+<sem_type>image</sem_type>
+<type_list>
+<item>byte</item>
+</type_list>
+</parameter>
+<parameter id="LightDark">
+<default_type>string</default_type>
+<sem_type>string</sem_type>
+<type_list>
+<item>string</item>
+</type_list>
+<values>
+<item>'light'</item>
+<item>'dark'</item>
+</values>
+</parameter>
+<parameter id="Rect2Len1">
+<default_type>real</default_type>
+<sem_type>rectangle2.hwidth</sem_type>
+<type_list>
+<item>real</item>
+</type_list>
+</parameter>
+<parameter id="Rect2Len2">
+<default_type>real</default_type>
+<sem_type>rectangle2.hheight</sem_type>
+<type_list>
+<item>real</item>
+</type_list>
+</parameter>
+<parameter id="WidthMax">
+<default_type>real</default_type>
+<sem_type>real</sem_type>
+<type_list>
+<item>real</item>
+</type_list>
+</parameter>
+<parameter id="WidthMin">
+<default_type>real</default_type>
+<sem_type>real</sem_type>
+<type_list>
+<item>real</item>
+</type_list>
+</parameter>
+</parameters>
+</docu>
+</procedure>
+</hdevelop>
