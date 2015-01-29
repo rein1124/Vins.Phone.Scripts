@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.1" halcon_version="12.0">
+<procedure name="main">
+<interface/>
+<body>
+<l>dev_set_draw ('margin')</l>
+<c></c>
+<l>read_image (Image, 'SearchRegionTarget_C-Antenna-TopRight_1_Around_Cropped')</l>
+<c></c>
+<l>GrayOpeningAndDilationFilter (Image, EnhancedImage, 1, 0, 2, 8, 1, 0)</l>
+<c></c>
+<c></c>
+</body>
+<docu id="main">
+<parameters/>
+</docu>
+</procedure>
+<procedure name="GrayOpeningAndDilationFilter">
+<interface>
+<io>
+<par name="Image" base_type="iconic" dimension="0"/>
+</io>
+<oo>
+<par name="EnhancedImage" base_type="iconic" dimension="0"/>
+</oo>
+<ic>
+<par name="GrayOpeningMaskHeight" base_type="ctrl" dimension="0"/>
+<par name="GrayOpeningMaskWidth" base_type="ctrl" dimension="0"/>
+<par name="GrayDilationMaskHeight" base_type="ctrl" dimension="0"/>
+<par name="GrayDilationMaskWidth" base_type="ctrl" dimension="0"/>
+<par name="SubImageMult" base_type="ctrl" dimension="0"/>
+<par name="SubImageAdd" base_type="ctrl" dimension="0"/>
+</ic>
+</interface>
+<body>
+<l>get_domain (Image, Domain)</l>
+<l>region_features (Domain, 'width', DomainWidth)</l>
+<l>region_features (Domain, 'height', DomainHeight)</l>
+<c></c>
+<l>if(GrayOpeningMaskHeight&lt;=0)</l>
+<l>    gray_opening_rect (Image, ImageOpening, DomainHeight, GrayOpeningMaskWidth)    </l>
+<l>elseif(GrayOpeningMaskWidth&lt;=0)</l>
+<l>    gray_opening_rect (Image, ImageOpening, GrayOpeningMaskHeight, DomainWidth)    </l>
+<l>else</l>
+<l>    gray_opening_rect (Image, ImageOpening, GrayOpeningMaskHeight, GrayOpeningMaskWidth) </l>
+<l>endif</l>
+<c></c>
+<c></c>
+<l>gray_dilation_rect (ImageOpening, ImageMax, GrayDilationMaskHeight, GrayDilationMaskWidth)</l>
+<c></c>
+<l>sub_image (Image, ImageMax, EnhancedImage, SubImageMult, SubImageAdd)</l>
+<c></c>
+<l>return ()</l>
+</body>
+<docu id="GrayOpeningAndDilationFilter">
+<parameters>
+<parameter id="EnhancedImage"/>
+<parameter id="GrayDilationMaskHeight">
+<default_type>integer</default_type>
+<sem_type>extent.y</sem_type>
+<type_list>
+<item>integer</item>
+</type_list>
+</parameter>
+<parameter id="GrayDilationMaskWidth">
+<default_type>integer</default_type>
+<sem_type>extent.x</sem_type>
+<type_list>
+<item>integer</item>
+</type_list>
+</parameter>
+<parameter id="GrayOpeningMaskHeight">
+<default_type>integer</default_type>
+<sem_type>extent.y</sem_type>
+<type_list>
+<item>integer</item>
+</type_list>
+</parameter>
+<parameter id="GrayOpeningMaskWidth">
+<default_type>integer</default_type>
+<sem_type>extent.x</sem_type>
+<type_list>
+<item>integer</item>
+</type_list>
+</parameter>
+<parameter id="Image">
+<sem_type>image</sem_type>
+<type_list>
+<item>byte</item>
+</type_list>
+</parameter>
+<parameter id="SubImageAdd">
+<default_type>real</default_type>
+<sem_type>number</sem_type>
+<type_list>
+<item>real</item>
+</type_list>
+</parameter>
+<parameter id="SubImageMult">
+<default_type>real</default_type>
+<sem_type>number</sem_type>
+<type_list>
+<item>real</item>
+</type_list>
+</parameter>
+</parameters>
+</docu>
+</procedure>
+</hdevelop>
