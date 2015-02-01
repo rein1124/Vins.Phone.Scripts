@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.1" halcon_version="12.0">
+<procedure name="main">
+<interface/>
+<body>
+<l>*read_image (Image, 'B:/New Folder1/SurfaceDefinition_C-Middle_Include_C-Middle-01.Domain.Crop.tif')</l>
+<l>*read_image (Image, 'B:/New Folder1/SurfaceDefinition_C-Middle_Include_C-Middle-02b.Domain.Crop.tif')</l>
+<l>read_image (Image, 'B:/New Folder1/SurfaceDefinition_C-Middle_Include_C-Middle-04.Domain.Crop.tif')</l>
+<l>*read_image (Image, 'B:/New Folder1/SurfaceDefinition_C-Middle_Include_C-Middle-05a.Domain.Crop.tif')</l>
+<l>*read_image (Image, 'B:/New Folder1/SurfaceDefinition_C-Middle_Include_C-Middle-05c.Domain.Crop.tif')</l>
+<c></c>
+<c></c>
+<l>get_image_size (Image, Width, Height)</l>
+<c></c>
+<c>* FFC</c>
+<l>mean_image (Image, ImageMean1, 500, 500)</l>
+<l>mean_image (Image, ImageMean2, 1, 500)</l>
+<l>sub_image (ImageMean1, ImageMean2, ImageSub, 1, 0)</l>
+<l>add_image (Image, ImageSub, ImageResult, 1, 0)</l>
+<c></c>
+<l>*gray_dilation_shape (ImageResult, ImageMax, 7, 7, 'octagon')</l>
+<l>*gen_disc_se (SE, 'byte', 7, 7, 0)</l>
+<l>*gray_tophat (ImageResult, SE, ImageTopHat)</l>
+<l>*scale_image_max (ImageTopHat, ImageScaleMax)</l>
+<c></c>
+<l>gray_opening_shape (ImageResult, ImageOpening1, 5, 5, 'octagon')</l>
+<l>*median_image (ImageResult, ImageMedian1, 'circle', 1, 'mirrored')</l>
+<l>mean_image (ImageOpening1, ImageMean3, 50, 50)</l>
+<l>mean_image (ImageOpening1, ImageMean4, 400, 400)</l>
+<l>dyn_threshold (ImageMean3, ImageMean4, RegionDynThresh1, 5, 'light')</l>
+<c></c>
+<c></c>
+<l>connection (RegionDynThresh1, ConnectedRegions)</l>
+<l>fill_up (ConnectedRegions, RegionFillUp)</l>
+<l>closing_circle (RegionFillUp, RegionClosing, 3.5)</l>
+<l>select_shape (RegionClosing, SelectedRegions, 'area', 'and', 400, 99999)</l>
+<l>select_shape (SelectedRegions, SelectedRegions1, 'rect2_len1', 'and', 25, 99999)</l>
+</body>
+<docu id="main">
+<parameters/>
+</docu>
+</procedure>
+</hdevelop>

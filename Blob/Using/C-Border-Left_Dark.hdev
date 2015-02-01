@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hdevelop file_version="1.1" halcon_version="12.0">
+<procedure name="main">
+<interface/>
+<body>
+<l>*read_image (Image, 'B:/New Folder1/SurfaceDefinition_C-Middle_Include_C-Middle-01.Domain.Crop.tif')</l>
+<l>*read_image (Image, 'B:/New Folder1/SurfaceDefinition_C-Middle_Include_C-Middle-02b.Domain.Crop.tif')</l>
+<l>read_image (Image, 'B:/SurfaceDefinition_C-Border-Left_Include_C-Border-Left.Domain.Crop.tif')</l>
+<l>*read_image (Image, 'B:/New Folder1/SurfaceDefinition_C-Middle_Include_C-Middle-05a.Domain.Crop.tif')</l>
+<l>*read_image (Image, 'B:/New Folder1/SurfaceDefinition_C-Middle_Include_C-Middle-05c.Domain.Crop.tif')</l>
+<c></c>
+<c></c>
+<l>get_image_size (Image, Width, Height)</l>
+<c></c>
+<l>threshold (Image, Region, 1, 255)</l>
+<l>expand_domain_gray (Image, ExpandedImage, 50)</l>
+<c></c>
+<c></c>
+<c></c>
+<l>mean_image (Image, ImageMean1, 100, 200)</l>
+<l>mean_image (Image, ImageMean2, 1, 200)</l>
+<l>sub_image (ImageMean1, ImageMean2, ImageSub, 1, 0)</l>
+<l>add_image (Image, ImageSub, ImageResult, 1, 0)</l>
+<c></c>
+<c>* preprocess filter</c>
+<l>gray_opening_shape (ImageResult, ImageOpening, 11, 11, 'octagon')</l>
+<c></c>
+<c>* targets image</c>
+<l>gray_erosion_shape (ImageOpening, ImageMax, 11, 11, 'octagon')</l>
+<c></c>
+<c>* threshold image</c>
+<l>gray_closing_shape (ImageOpening, ImageClosing, 15, 15, 'octagon')</l>
+<l>mean_image (ImageClosing, ImageMean, 10, Height)</l>
+<c></c>
+<c>* dyn</c>
+<l>dyn_threshold (ImageMax, ImageMean, RegionDynThresh, 15, 'dark')</l>
+<c></c>
+<l>connection (RegionDynThresh, ConnectedRegions)</l>
+<l>select_shape (ConnectedRegions, SelectedRegions, 'area', 'and', 200, 99999)</l>
+<l>select_shape (SelectedRegions, SelectedRegions1, 'rect2_len1', 'and', 15, 99999)</l>
+</body>
+<docu id="main">
+<parameters/>
+</docu>
+</procedure>
+</hdevelop>
